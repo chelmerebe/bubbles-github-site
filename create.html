@@ -18,15 +18,20 @@
   <div class="container">
     <h2>✨ יצירת בועה זמנית</h2>
     <form id="bubbleForm">
+      <label for="bubbleName">שם הבועה:</label>
       <input type="text" id="bubbleName" placeholder="שם הבועה (למשל: ריח הדרים)" required><br>
-      <label>זמן חיי הבועה:</label>
+
+      <label for="bubbleDuration">זמן חיי הבועה:</label>
       <select id="bubbleDuration">
         <option value="10">10 דקות</option>
         <option value="30">30 דקות</option>
         <option value="60">שעה</option>
         <option value="1440">יום שלם</option>
       </select><br>
+
+      <label for="bubbleIntro">תוכן התחלתי לבועה:</label>
       <textarea id="bubbleIntro" placeholder="כתוב כאן הקדמה או תוכן ראשוני לבועה..." rows="4"></textarea><br>
+
       <button type="submit">🚀 צור בועה</button>
     </form>
     <div id="linkSection" style="display:none;">
