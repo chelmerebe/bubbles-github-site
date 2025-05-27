@@ -25,12 +25,17 @@
     <div id="timer"></div>
 
     <div id="chat"></div>
+
+    <label for="nickname">כינוי זמני:</label>
     <input type="text" id="nickname" placeholder="שם זמני (למשל: פרפר_14)">
+
+    <label for="messageInput">הודעה:</label>
     <input type="text" id="messageInput" placeholder="כתוב הודעה">
     <button onclick="sendMessage()">שלח</button>
 
     <div id="tasks">
       <h3>📋 רשימות</h3>
+      <label for="taskInput">משימה חדשה:</label>
       <input type="text" id="taskInput" placeholder="הוסף משימה">
       <button onclick="addTask()">הוסף</button>
       <ul id="taskList"></ul>
@@ -38,6 +43,7 @@
 
     <div id="links">
       <h3>🔗 קישורים</h3>
+      <label for="linkInput">קישור חדש:</label>
       <input type="text" id="linkInput" placeholder="הדבק קישור">
       <button onclick="addLink()">הוסף</button>
       <ul id="linkList"></ul>
