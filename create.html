@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>צור בועה חדשה</title>
+  <style>
+    body { font-family: sans-serif; background: #e0f7fa; text-align: center; padding: 40px; }
+    .container { background: white; border-radius: 16px; padding: 30px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, textarea, select, button {
+      font-size: 16px; padding: 10px; margin: 10px 0; width: 90%; border-radius: 8px; border: 1px solid #ccc;
+    }
+    button { background: #00796b; color: white; cursor: pointer; }
+    button:hover { background: #004d40; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>✨ יצירת בועה זמנית</h2>
+    <form id="bubbleForm">
+      <input type="text" id="bubbleName" placeholder="שם הבועה (למשל: ריח הדרים)" required><br>
+      <label>זמן חיי הבועה:</label>
+      <select id="bubbleDuration">
+        <option value="10">10 דקות</option>
+        <option value="30">30 דקות</option>
+        <option value="60">שעה</option>
+        <option value="1440">יום שלם</option>
+      </select><br>
+      <textarea id="bubbleIntro" placeholder="כתוב כאן הקדמה או תוכן ראשוני לבועה..." rows="4"></textarea><br>
+      <button type="submit">🚀 צור בועה</button>
+    </form>
+    <div id="linkSection" style="display:none;">
+      <h3>הבועה שלך מוכנה!</h3>
+      <p>שלח את הקישור הזה למי שתרצה:</p>
+      <input type="text" id="bubbleLink" readonly>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("bubbleForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("bubbleName").value.trim();
+      const duration = parseInt(document.getElementById("bubbleDuration").value);
+      const intro = document.getElementById("bubbleIntro").value.trim();
+      const id = "bubble_" + Math.random().toString(36).substring(2, 8);
+      const link = "bubble.html?id=" + id;
+
+      localStorage.setItem("bubble_" + id, JSON.stringify({
+        name: name,
+        intro: intro,
+        duration: duration,
+        created: Date.now()
+      }));
+
+      document.getElementById("bubbleLink").value = link;
+      document.getElementById("linkSection").style.display = "block";
+    });
+  </script>
+</body>
+</html>

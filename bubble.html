@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>בועה חיה</title>
+  <style>
+    body { font-family: sans-serif; background: #f1f8e9; padding: 20px; text-align: center; }
+    .container { background: white; padding: 20px; max-width: 600px; margin: auto; border-radius: 16px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { margin-bottom: 0; }
+    #bubbleIntro { font-style: italic; margin-bottom: 20px; }
+    #chat { border: 1px solid #ccc; height: 200px; overflow-y: auto; text-align: right; padding: 10px; margin-bottom: 10px; background: #fdfdfd; }
+    input, button, textarea { padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; width: 80%; margin: 5px auto; display: block; }
+    button { width: auto; background: #43a047; color: white; cursor: pointer; }
+    button:hover { background: #2e7d32; }
+    #tasks, #links { text-align: right; margin-top: 20px; }
+    li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="bubbleName">טעינה...</h2>
+    <p id="bubbleIntro">...</p>
+    <hr>
+    <div id="timer"></div>
+
+    <div id="chat"></div>
+    <input type="text" id="nickname" placeholder="שם זמני (למשל: פרפר_14)">
+    <input type="text" id="messageInput" placeholder="כתוב הודעה">
+    <button onclick="sendMessage()">שלח</button>
+
+    <div id="tasks">
+      <h3>📋 רשימות</h3>
+      <input type="text" id="taskInput" placeholder="הוסף משימה">
+      <button onclick="addTask()">הוסף</button>
+      <ul id="taskList"></ul>
+    </div>
+
+    <div id="links">
+      <h3>🔗 קישורים</h3>
+      <input type="text" id="linkInput" placeholder="הדבק קישור">
+      <button onclick="addLink()">הוסף</button>
+      <ul id="linkList"></ul>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const bubbleId = params.get("id");
+    const bubbleData = JSON.parse(localStorage.getItem("bubble_" + bubbleId)) || {};
+    const chatBox = document.getElementById("chat");
+    const taskList = document.getElementById("taskList");
+    const linkList = document.getElementById("linkList");
+
+    document.getElementById("bubbleName").textContent = bubbleData.name || "בועה ללא שם";
+    document.getElementById("bubbleIntro").textContent = bubbleData.intro || "אין הקדמה";
+    const expiresIn = bubbleData.duration * 60000;
+    const createdAt = bubbleData.created || Date.now();
+    const endsAt = createdAt + expiresIn;
+
+    function updateTimer() {
+      const now = Date.now();
+      const left = endsAt - now;
+      if (left <= 0) {
+        document.body.innerHTML = "<h2>⏳ הבועה התפוגגה</h2>";
+      } else {
+        const minutes = Math.floor(left / 60000);
+        const seconds = Math.floor((left % 60000) / 1000);
+        document.getElementById("timer").textContent = `⏱️ הבועה תיעלם בעוד ${minutes}:${seconds.toString().padStart(2, '0')}`;
+        setTimeout(updateTimer, 1000);
+      }
+    }
+
+    updateTimer();
+
+    function sendMessage() {
+      const nickname = document.getElementById("nickname").value || "אנונימי";
+      const msg = document.getElementById("messageInput").value;
+      if (msg) {
+        const p = document.createElement("p");
+        p.textContent = nickname + ": " + msg;
+        chatBox.appendChild(p);
+        document.getElementById("messageInput").value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+
+    function addTask() {
+      const task = document.getElementById("taskInput").value;
+      if (task) {
+        const li = document.createElement("li");
+        li.textContent = task;
+        taskList.appendChild(li);
+        document.getElementById("taskInput").value = "";
+      }
+    }
+
+    function addLink() {
+      const link = document.getElementById("linkInput").value;
+      if (link) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = link;
+        a.textContent = link;
+        a.target = "_blank";
+        li.appendChild(a);
+        linkList.appendChild(li);
+        document.getElementById("linkInput").value = "";
+      }
+    }
+  </script>
+</body>
+</html>
